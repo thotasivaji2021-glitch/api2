@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute Cats Gallery</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+    h2 {
+      text-align: center;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <h2>🐱 Cute Cats Gallery</h2>
+  <div class="gallery" id="catsGallery"></div>
+
+  <script>
+    axios.get("https://api.thecatapi.com/v1/images/search?limit=10")
+      .then(response => {
+        const cats = response.data;
+        const gallery = document.getElementById("catsGallery");
+        cats.forEach(cat => {
+          const card = `
+            <div class="card">
+              <img src="${cat.url}" alt="Cute Cat">
+            </div>
+          `;
+          gallery.innerHTML += card;
+        });
+      })
+      .catch(error => console.error("Error fetching cats:", error));
+  </script>
+</body>
+</html>
